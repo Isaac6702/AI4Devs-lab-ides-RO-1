@@ -1,35 +1,65 @@
 # LTI - Sistema de Seguimiento de Talento
 
-Este proyecto es una aplicación full-stack con un frontend en React y un backend en Express usando Prisma como ORM. El frontend se inicia con Create React App y el backend está escrito en TypeScript.
+Este proyecto es una aplicación full-stack con un frontend en React y un backend en Express usando Prisma como ORM. El frontend se inicia con Create React App y el backend está escrito en TypeScript. Permite gestionar candidatos, incluyendo la carga y almacenamiento de sus CVs.
+
+## Características Principales
+
+- Gestión de candidatos con almacenamiento de información personal
+- Carga y almacenamiento de archivos CV
+- Arquitectura hexagonal (puertos y adaptadores) en el backend
+- Interfaz de usuario intuitiva para añadir candidatos
 
 ## Explicación de Directorios y Archivos
 
 - `backend/`: Contiene el código del lado del servidor escrito en Node.js.
   - `src/`: Contiene el código fuente para el backend.
     - `index.ts`: El punto de entrada para el servidor backend.
-  - `prisma/`: Contiene el archivo de esquema de Prisma para ORM.
+    - `domain/`: Contiene las entidades del dominio y los casos de uso (arquitectura hexagonal)
+      - `entities/`: Definiciones de entidades como Candidate
+      - `ports/`: Interfaces para repositorios y servicios externos
+      - `use-cases/`: Casos de uso de la aplicación, como AddCandidateUseCase
+    - `infrastructure/`: Implementaciones concretas de los puertos
+      - `adapters/`: Adaptadores para bases de datos, almacenamiento de archivos, etc.
+        - `controllers/`: Controladores de API
+        - `persistence/`: Implementaciones de repositorios usando Prisma
+        - `storage/`: Adaptadores para el almacenamiento de archivos
+      - `routes/`: Definiciones de rutas de la API
+  - `prisma/`: Contiene el esquema de Prisma para ORM y migraciones.
+  - `uploads/`: Directorio donde se almacenan los archivos CV subidos.
+  - `tests/`: Pruebas unitarias e integración para el backend.
   - `tsconfig.json`: Archivo de configuración de TypeScript.
   - `.env`: Contiene las variables de entorno.
 - `frontend/`: Contiene el código del lado del cliente escrito en React.
   - `src/`: Contiene el código fuente para el frontend.
+    - `components/`: Componentes React, incluyendo AddCandidateForm para añadir candidatos
   - `public/`: Contiene archivos estáticos como el archivo HTML e imágenes.
   - `build/`: Contiene la construcción lista para producción del frontend.
 - `docker-compose.yml`: Contiene la configuración de Docker Compose para gestionar los servicios de tu aplicación.
+- `dummy-cv.pdf`: Archivo de ejemplo para probar la funcionalidad de carga de CV.
 - `README.md`: Este archivo contiene información sobre el proyecto e instrucciones sobre cómo ejecutarlo.
 
-## Estructura del Proyecto
+## Arquitectura del Proyecto
 
-El proyecto está dividido en dos directorios principales: `frontend` y `backend`.
+El proyecto sigue una arquitectura hexagonal (también conocida como puertos y adaptadores) en el backend, lo que permite una clara separación de responsabilidades y facilita las pruebas.
 
 ### Frontend
 
-El frontend es una aplicación React y sus archivos principales están ubicados en el directorio `src`. El directorio `public` contiene activos estáticos y el directorio `build` contiene la construcción de producción de la aplicación.
+El frontend es una aplicación React y sus archivos principales están ubicados en el directorio `src`. Incluye un formulario para añadir candidatos con capacidad de carga de archivos CV.
 
 ### Backend
 
-El backend es una aplicación Express escrita en TypeScript.
-- El directorio `src` contiene el código fuente
-- El directorio `prisma` contiene el esquema de Prisma.
+El backend es una aplicación Express escrita en TypeScript con la siguiente estructura:
+
+- **Dominio**: Contiene la lógica de negocio pura, independiente de infraestructura.
+  - Entidades: Representaciones de conceptos del dominio (Candidate)
+  - Puertos: Interfaces que define el dominio para interactuar con el exterior
+  - Casos de Uso: Implementan la lógica de negocio (AddCandidateUseCase)
+  
+- **Infraestructura**: Implementaciones concretas de los puertos.
+  - Controladores: Gestión de peticiones HTTP (CandidateController)
+  - Repositorios: Persistencia de datos usando Prisma (PrismaCandidateRepository)
+  - Almacenamiento: Gestión de archivos CV (FileSystemStorageAdapter)
+  - Rutas: Definición de endpoints API (candidateRoutes)
 
 ## Primeros Pasos
 
@@ -44,23 +74,24 @@ npm install
 cd ../backend
 npm install
 ```
-3. Construye el servidor backend:
+3. Configura la base de datos (ver sección Docker y PostgreSQL).
+4. Aplica las migraciones de Prisma:
+```sh
+cd backend
+npx prisma migrate dev
+```
+5. Construye el servidor backend:
 ```
 cd backend
 npm run build
-````
-4. Inicia el servidor backend:
+```
+6. Inicia el servidor backend:
 ```
 cd backend
 npm run dev 
 ```
 
-5. En una nueva ventana de terminal, construye el servidor frontend:
-```
-cd frontend
-npm run build
-```
-6. Inicia el servidor frontend:
+7. En una nueva ventana de terminal, inicia el servidor frontend:
 ```
 cd frontend
 npm start
@@ -93,3 +124,34 @@ Para detener el contenedor Docker, ejecuta el siguiente comando:
 ```
 docker-compose down
 ```
+
+## Pruebas
+
+El proyecto incluye pruebas unitarias y de integración para el backend:
+
+```sh
+cd backend
+npm test
+```
+
+Para generar informes de cobertura:
+
+```sh
+cd backend
+npm run test:coverage
+```
+
+## API Endpoints
+
+- **POST /api/candidates**: Añade un nuevo candidato con un archivo CV
+  - Requiere un formulario multipart con datos del candidato y archivo CV
+
+## Tecnologías utilizadas
+
+- **Frontend**: React, TypeScript, CSS
+- **Backend**: Node.js, Express, TypeScript
+- **Base de datos**: PostgreSQL
+- **ORM**: Prisma
+- **Testing**: Jest
+- **Virtualización**: Docker
+
