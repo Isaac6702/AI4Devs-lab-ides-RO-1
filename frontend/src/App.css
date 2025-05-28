@@ -1,5 +1,20 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f7f6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   text-align: center;
+  max-width: 1000px; /* Max width for the whole app content */
+  margin: 0 auto; /* Center the app content */
+  padding: 20px;
 }
 
 .App-logo {
@@ -14,14 +29,24 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: #2c3e50; /* Dark blue-grey */
+  padding: 20px;
   color: white;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+main {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .App-link {
@@ -36,3 +61,103 @@
     transform: rotate(360deg);
   }
 }
+
+/* Styles for AddCandidateForm */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between form elements */
+  max-width: 600px; /* Max width for the form */
+  margin: 20px auto; /* Center the form */
+  padding: 25px;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form h2 {
+  color: #34495e; /* Slightly lighter blue-grey */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form textarea,
+form input[type="file"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  width: 100%; /* Make inputs take full width of their container */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+form input[type="file"] {
+  padding: 3px; /* Specific padding for file input if needed */
+}
+
+form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+form button[type="submit"] {
+  padding: 12px 20px;
+  background-color: #3498db; /* Bright blue */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px; /* Add some space above the button */
+}
+
+form button[type="submit"]:hover {
+  background-color: #2980b9; /* Darker blue on hover */
+}
+
+/* Messages */
+form p[style*="color: green"] { /* Targets success message based on inline style */
+  color: #27ae60 !important; /* Green for success */
+  background-color: #e9f7ef;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #a7d7c5;
+  text-align: center;
+  margin-bottom: 15px; /* Space below the message */
+}
+
+/* General error message styling (if it's a block) */
+form > p[style*="color: red"]:first-of-type {
+  color: #c0392b !important; /* Red for errors */
+  background-color: #fdedec; /* Lighter red background */
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #eeb7b4;
+  text-align: center;
+  margin-bottom: 15px; /* Space below the message */
+}
+
+/* Field-specific error messages */
+form div > p[style*="color: red"] {
+  color: #c0392b !important; /* Red for errors */
+  font-size: 0.9em;
+  margin-top: 3px;
+  /* No background for field-specific errors */
+}
+

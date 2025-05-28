@@ -17,4 +17,31 @@ model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
+  // Potentially add a role for authorization:
+  // role  Role    @default(USER)
 }
+
+// Enum for User Roles (optional, if you want to differentiate users)
+// enum Role {
+//   USER
+//   RECRUITER
+//   ADMIN
+// }
+
+model Candidate {
+  id              Int      @id @default(autoincrement())
+  firstName       String
+  lastName        String
+  email           String   @unique
+  phone           String?
+  address         String?
+  education       String? // Consider JSON type if your DB supports it and you need structured data
+  workExperience  String? // Consider JSON type for structured data
+  cvPath          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  // Optional: Link to the User who created/owns this candidate (if applicable)
+  // recruiterId   Int?
+  // recruiter     User?    @relation(fields: [recruiterId], references: [id])
+}
+
